@@ -7,12 +7,12 @@
 
 body {
     background-color: transparent;
-    min-height: 100dvh; /* Usa a altura dinâmica real em celulares */
+    min-height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 12px;
+    padding: 10px;
     position: relative;
     overflow: hidden;
 }
@@ -27,53 +27,247 @@ body::before {
     background-size: cover;
     background-position: left center;
     z-index: 0;
-    opacity: 0.4;
+    opacity: 0.5;
     pointer-events: none;
 }
 
-/* =========================================
-   GAMEBOY (BASE RESPONSIVA PROPORCIONAL)
-   ========================================= */
+/* Caixa de pesquisa logo abaixo da logo da Nintendo */
+.search-box {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 82%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 12px;
+    z-index: 20;
+}
+
+#pokemonInput {
+    width: 100%;
+    height: 40px;
+    padding: 4px 8px;
+    border: 2px solid rgb(255, 177, 177);
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #222222;
+    font-family: 'VT323', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+    outline: none;
+    box-shadow:
+        inset 2px 2px 3px rgba(87, 26, 26, 0.781),
+        inset -3px -3px 3px rgba(87, 26, 26, 0.096);
+}
+
+#pokemonInput:focus {
+    border-color: #001aff;
+}
+
+.search-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+#searchBtn,
+#cleanBtn {
+    flex: 0 1 auto;
+    width: auto;
+    height: 30px;
+    padding: 6px 20px;
+    border-radius: 6px;
+    border: none;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+#searchBtn {
+    background-color: brown;
+    box-shadow: 
+        1px 3px 0px #5c1414,
+        inset 1px 3px 2px #ff8e8e;
+}
+
+#searchBtn:hover {
+    filter: brightness(1.1);
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+#cleanBtn {
+    background-color: rgb(110, 110, 110);
+    box-shadow: 
+        1px 3px 0px #444444,
+        inset 1px 3px 2px #a7a7a7;
+}
+
+#cleanBtn:hover {
+    filter: brightness(1.1);
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+#searchBtn:active,
+#cleanBtn:active {
+    transform: translateY(1px);
+}
+
+/* Conteúdo do Pokémon dentro da .screen */
+.pokemon-card {
+    width: 100%;
+    height: 100%;
+    padding: 4% 0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    gap: 12px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.pokemon-number {
+    color: #ffd000;
+    background-color: rgba(255, 208, 0, 0.08);
+    border: 1.5px solid rgba(255, 208, 0, 0.55);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.55rem, 4.5cqi, 0.8rem);
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0px #000000;
+}
+
+.pokemon-card img {
+    width: 140px;
+    max-width: 200px;
+    max-height: 55%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    animation: flutuar 2.5s ease-in-out infinite;
+}
+
+@keyframes flutuar {
+    0%, 100% {
+        transform: translateY(0%) scale(1.25);
+    }
+    50% {
+        transform: translateY(-4%) scale(1.25);
+    }
+}
+
+.pokemon-name,
+.pokemon-card h2 {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: clamp(0.75rem, 6.5cqi, 1.25rem);
+    font-family: 'Press Start 2P', monospace;
+    line-height: 1.2;
+    text-shadow: 2px 2px 0px #000000;
+    max-width: 100%;
+    word-break: break-word;
+}
+
+.type-badge {
+    background-color: #a8a89c;
+    color: #ffffff;
+    border-radius: 999px;
+    padding: 5px 18px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.5rem, 4cqi, 0.72rem);
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.65);
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.pokemon-card p,
+.pokemon-card p strong {
+    color: #ffffff;
+    font-size: clamp(0.6rem, 4.5cqi, 0.9rem);
+    font-family: 'Press Start 2P', monospace;
+    font-weight: normal;
+    line-height: 1.4;
+    gap: 12px;
+}
+
+/* Mensagens de feedback (carregamento/erro) na .screen */
+.message {
+    color: #fffb00;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.6rem, 4.5cqi, 0.85rem);
+    line-height: 1.5;
+    text-align: center;
+    padding: 8px;
+    max-width: 100%;
+    word-break: break-word;
+    text-shadow: 2px 2px 0px #000000;
+}
+
+.error {
+    color: #fffb00 !important;
+    font-weight: bold;
+    text-shadow: 0px solid black;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* GameBoy */
 .gameBoy {
-    /* Mantém a proporção original de 500x800 (5 / 8) e nunca ultrapassa a tela */
-    width: min(92vw, 500px, calc(92dvh * 0.625));
-    aspect-ratio: 5 / 8;
-    height: auto;
-    position: relative; /* Centralizado pelo flex do body */
+    width: 500px;
+    height: 800px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 3%;
-    border-bottom-right-radius: 20%; /* Proporcional aos 100px originais */
+    border-bottom-right-radius: 100px;
     background: linear-gradient(145deg, #ffc4d0, pink 55%, #f29cb0);
     box-shadow:
         5px 10px 10px rgba(97, 47, 60, 0.842),
         inset 6px 8px 8px rgba(255, 255, 255, 0.712),
         inset -4px -12px 12px rgba(140, 20, 54, 0.37);
     z-index: 1;
-    container-type: inline-size; /* Permite escalar textos e detalhes internos */
 }
 
-/* =========================================
-   TELA E MOLDURA
-   ========================================= */
 .screen-border {
     width: 80%;
     height: 50%;
     background: linear-gradient(145deg, #a5a5a5 0%, rgb(197, 197, 197) 45%, #535353 100%);
     position: absolute;
-    top: 7.5%;  /* 60px / 800px */
-    left: 10%;  /* 50px / 500px */
+    top: 60px;
+    left: 50px;
     border-radius: 5%;
-    border-bottom-right-radius: 25%; /* 100px / 400px */
+    border-bottom-right-radius: 100px;
     box-shadow:
         inset 2px 2px 4px rgba(255, 255, 255, 0.801),
         inset -3px -2px 3px rgba(19, 19, 19, 0.507);
 }
 
 .line-red {
-    width: 45%; /* 180px / 400px */
-    height: 1%; /* 4px / 400px */
-    min-height: 2px;
+    width: 180px;
+    height: 4px;
     background-color: rgb(182, 80, 80);
-    margin: 4% auto 0;
+    margin: 0 auto;
+    margin-top: 16px;
 }
 
 .screen {
@@ -101,20 +295,20 @@ body::before {
         to bottom,
         transparent 0px,
         transparent 3px,
-        rgba(255, 255, 255, 0.28) 3px,
-        rgba(255, 255, 255, 0.28) 4px
+        rgba(206, 206, 206, 0.178) 3px,
+        rgba(255, 255, 255, 0.116) 4px
     );
     pointer-events: none;
     z-index: 5;
 }
 
 .power {
-    width: 5%;   /* 20px / 400px */
-    height: 5%;  /* 20px / 400px */
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     position: absolute;
-    top: 22.5%;  /* 90px / 400px */
-    left: 7.5%;  /* 30px / 400px */
+    top: 90px;
+    left: 30px;
     background: radial-gradient(
         circle at 32% 28%,
         #ffffff 0%,
@@ -133,236 +327,37 @@ body::before {
     animation: led-pulse 3s ease-in-out infinite;
 }
 
-/* =========================================
-   LOGO NINTENDO / GB
-   ========================================= */
 .logo {
     position: absolute;
-    top: 58.5%;
-    left: 12%;
+    top: 59%;
+    left: 13%;
     width: 80%;
     color: rgb(65, 65, 65);
-    display: flex;
-    align-items: baseline;
-    gap: 1.5%;
 }
 
 .nintendo {
+    float: left;
     font-weight: bolder;
-    font-size: clamp(0.65rem, 3.6cqw, 1.15rem);
-    line-height: 1.2;
+    font-size: 18px;
+    line-height: 46px;
+    margin-right: 6px;
 }
 
 .GB {
+    float: left;
     font-style: italic;
     text-transform: uppercase;
     font-weight: bolder;
-    font-size: clamp(0.95rem, 5.6cqw, 1.75rem);
-    line-height: 1.2;
+    font-size: 28px;
+    line-height: 46px;
 }
 
-/* =========================================
-   CAIXA DE PESQUISA
-   ========================================= */
-.search-box {
-    position: absolute;
-    top: 63.5%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 82%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(4px, 1.5cqw, 8px);
-    padding: clamp(4px, 1.5cqw, 10px);
-    border-radius: 12px;
-    z-index: 20;
-}
-
-#pokemonInput {
-    width: 100%;
-    height: clamp(28px, 8cqw, 40px);
-    padding: 4px 8px;
-    border: 2px solid rgb(255, 177, 177);
-    border-radius: 8px;
-    background-color: #ffffff;
-    color: #222222;
-    font-family: 'VT323', monospace;
-    font-size: clamp(0.85rem, 3.8cqw, 1.1rem);
-    text-align: center;
-    outline: none;
-    box-shadow:
-        inset 2px 2px 3px rgba(87, 26, 26, 0.781),
-        inset -3px -3px 3px rgba(87, 26, 26, 0.096);
-}
-
-#pokemonInput:focus {
-    border-color: #001aff;
-}
-
-.search-actions {
-    width: 100%;
-    display: flex;
-    gap: clamp(6px, 2cqw, 10px);
-    justify-content: center;
-}
-
-#searchBtn,
-#cleanBtn {
-    flex: 0 1 auto;
-    height: clamp(22px, 6cqw, 30px);
-    padding: 0 clamp(10px, 4cqw, 20px);
-    border-radius: 6px;
-    border: none;
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(0.42rem, 2cqw, 0.6rem);
-    color: #ffffff;
-    cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
-}
-
-#searchBtn {
-    background-color: brown;
-    box-shadow: 
-        1px 3px 0px #5c1414,
-        inset 1px 3px 2px #ff8e8e;
-}
-
-#cleanBtn {
-    background-color: rgb(110, 110, 110);
-    box-shadow: 
-        1px 3px 0px #444444,
-        inset 1px 3px 2px #a7a7a7;
-}
-
-#searchBtn:hover,
-#cleanBtn:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-}
-
-#searchBtn:active,
-#cleanBtn:active {
-    transform: translateY(1px);
-}
-
-/* =========================================
-   CONTEÚDO DO POKÉMON DENTRO DA TELA
-   ========================================= */
-.pokemon-card {
-    width: 100%;
-    height: 100%;
-    padding: 2% 0;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    gap: 4%;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-.pokemon-number {
-    color: #ffd000;
-    background-color: rgba(255, 208, 0, 0.08);
-    border: 1.5px solid rgba(255, 208, 0, 0.55);
-    border-radius: 999px;
-    padding: 3px 10px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(0.42rem, 4cqi, 0.8rem);
-    letter-spacing: 1px;
-    text-shadow: 1px 1px 0px #000000;
-}
-
-.pokemon-card img {
-    width: 55%; /* Fluido em relação à tela */
-    max-width: 160px;
-    max-height: 48%;
-    aspect-ratio: 1 / 1;
-    object-fit: contain;
-    animation: flutuar 2.5s ease-in-out infinite;
-}
-
-@keyframes flutuar {
-    0%, 100% {
-        transform: translateY(0%) scale(1.2);
-    }
-    50% {
-        transform: translateY(-4%) scale(1.2);
-    }
-}
-
-.pokemon-name,
-.pokemon-card h2 {
-    color: #ffffff;
-    text-transform: uppercase;
-    font-size: clamp(0.55rem, 6cqi, 1.2rem);
-    font-family: 'Press Start 2P', monospace;
-    line-height: 1.2;
-    text-shadow: 2px 2px 0px #000000;
-    max-width: 100%;
-    word-break: break-word;
-}
-
-.type-badge {
-    background-color: #a8a89c;
-    color: #ffffff;
-    border-radius: 999px;
-    padding: 4px 14px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(0.4rem, 3.8cqi, 0.72rem);
-    text-transform: uppercase;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.65);
-    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.25);
-}
-
-.pokemon-card p,
-.pokemon-card p strong {
-    color: #ffffff;
-    font-size: clamp(0.45rem, 4.2cqi, 0.85rem);
-    font-family: 'Press Start 2P', monospace;
-    font-weight: normal;
-    line-height: 1.35;
-}
-
-.message {
-    color: #fffb00;
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(0.48rem, 4.5cqi, 0.85rem);
-    line-height: 1.5;
-    text-align: center;
-    padding: 8px;
-    max-width: 100%;
-    word-break: break-word;
-    text-shadow: 2px 2px 0px #000000;
-}
-
-.error {
-    color: #fffb00 !important;
-    font-weight: bold;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* =========================================
-   CONTROLES: D-PAD E VOLUME
-   ========================================= */
 .d-pad {
-    width: 22%;    /* 110px / 500px */
-    height: 13.75%; /* 110px / 800px */
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     position: absolute;
-    top: 77%;
+    top: 78%;
     left: 10%;
     background: radial-gradient(
         circle at 65% 65%,
@@ -386,43 +381,26 @@ body::before {
 }
 
 .d-y {
-    width: 21.8%;  /* 24px / 110px */
-    height: 60%;   /* 66px / 110px */
+    width: 24px;
+    height: 66px;
+    background-color: rgb(0, 0, 0);
     position: absolute;
     top: 50%;
     left: 50%;
     border-radius: 6px;
     transform: translate(-50%, -50%);
-}
-
-.d-x {
-    width: 60%;    /* 66px / 110px */
-    height: 21.8%; /* 24px / 110px */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-radius: 6px;
-    transform: translate(-50%, -50%);
-}
-
-.d-y,
-.d-x {
-    background: linear-gradient(145deg, #3a3a3a, #080808);
-    box-shadow:
-        1px 2px 4px rgba(0, 0, 0, 0.55),
-        inset 2px 1px 1px rgba(255, 255, 255, 0.452);
 }
 
 .vol-up,
 .vol-down {
     position: absolute;
     left: 50%;
-    width: 22%;
-    height: 18%;
+    width: 24px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(6px, 1.8cqw, 10px);
+    font-size: 9px;
     color: rgba(255, 255, 255, 0.78);
     cursor: pointer;
     user-select: none;
@@ -431,12 +409,12 @@ body::before {
 }
 
 .vol-up {
-    top: 20%;
+    top: 23px;
     transform: translateX(-50%);
 }
 
 .vol-down {
-    bottom: 20%;
+    bottom: 23px;
     transform: translateX(-50%);
 }
 
@@ -445,9 +423,23 @@ body::before {
     color: #ffffff;
 }
 
-.vol-up:active,
+.vol-up:active {
+    transform: translateX(-50%) scale(0.9);
+}
+
 .vol-down:active {
     transform: translateX(-50%) scale(0.9);
+}
+
+.d-x {
+    width: 66px;
+    height: 24px;
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 6px;
+    transform: translate(-50%, -50%);
 }
 
 .vol-label {
@@ -458,7 +450,7 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(6px, 2cqw, 10px);
+    font-size: 10px;
     font-weight: bold;
     letter-spacing: 0.5px;
     color: rgba(255, 255, 255, 0.8);
@@ -467,15 +459,20 @@ body::before {
     user-select: none;
 }
 
-/* =========================================
-   BOTÕES A E B
-   ========================================= */
+.d-y,
+.d-x {
+    background: linear-gradient(145deg, #3a3a3a, #080808);
+    box-shadow:
+        1px 2px 4px rgba(0, 0, 0, 0.55),
+        inset 2px 1px 1px rgba(255, 255, 255, 0.452);
+}
+
 .buttons {
-    width: 11.2%;   /* 56px / 500px */
-    height: 16.25%; /* 130px / 800px */
-    border-radius: 999px;
+    width: 56px;
+    height: 130px;
+    border-radius: 30px;
     position: absolute;
-    top: 76.5%;
+    top: 77%;
     right: 17%;
     transform: rotate(60deg);
     background: linear-gradient(120deg, rgba(110, 52, 82, 0.88), rgba(150, 82, 116, 0.8));
@@ -487,8 +484,8 @@ body::before {
 
 .b-a,
 .b-b {
-    width: 71.4%;  /* 40px / 56px */
-    height: 30.7%; /* 40px / 130px */
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     position: absolute;
     cursor: pointer;
@@ -503,16 +500,6 @@ body::before {
     transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-.b-a {
-    top: 6.1%;   /* 8px / 130px */
-    right: 14.3%; /* 8px / 56px */
-}
-
-.b-b {
-    bottom: 6.1%;
-    left: 14.3%;
-}
-
 .btn-icon {
     width: 100%;
     height: 100%;
@@ -520,7 +507,7 @@ body::before {
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    font-size: clamp(12px, 4.4cqw, 22px);
+    font-size: 22px;
     line-height: 1;
     transform: rotate(-60deg);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -535,6 +522,16 @@ body::before {
     transform: rotate(-60deg) translate(-1px, -1px);
 }
 
+.b-a {
+    top: 8px;
+    right: 8px;
+}
+
+.b-b {
+    bottom: 8px;
+    left: 8px;
+}
+
 .b-a:active,
 .b-b:active {
     transform: translate(-2px, 2px);
@@ -544,12 +541,9 @@ body::before {
         inset -1px 2px 2px rgba(255, 255, 255, 0.25);
 }
 
-/* =========================================
-   BOTÕES START E SELECT
-   ========================================= */
 .buttons_s {
-    width: 16%;   /* 80px / 500px */
-    height: 7.5%; /* 60px / 800px */
+    width: 80px;
+    height: 60px;
     position: absolute;
     top: 90%;
     left: 42%;
@@ -557,8 +551,8 @@ body::before {
 
 .start,
 .select {
-    width: 17.5%;  /* 14px / 80px */
-    height: 66.6%; /* 40px / 60px */
+    width: 14px;
+    height: 40px;
     border-radius: 8px;
     cursor: pointer;
     background: linear-gradient(145deg, #4b4b4b 0%, #2b2b2b 55%, #141414 100%);
@@ -576,11 +570,17 @@ body::before {
 .select {
     transform: rotate(50deg);
     position: absolute;
-    right: 5%;
-    top: 0;
+    right: 4px;
+    top: 0px;
 }
 
-.start:active,
+.start:active {
+    transform: rotate(50deg) translate(1px, 2px);
+    box-shadow:
+        1px 1px 2px rgba(0, 0, 0, 0.5),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
 .select:active {
     transform: rotate(50deg) translate(1px, 2px);
     box-shadow:
@@ -589,18 +589,28 @@ body::before {
 }
 
 /* =========================================
-   AJUSTES EXTRAS PARA TELAS MUITO PEQUENAS
+   RESPONSIVIDADE (MANTENDO O FORMATO ORIGINAL)
    ========================================= */
-@media (max-width: 380px) {
-    body {
-        padding: 6px;
-    }
-
+@media (max-width: 560px) {
     .gameBoy {
-        width: min(96vw, calc(94dvh * 0.625));
+        transform: translate(-50%, -50%) scale(0.76);
     }
+}
 
-    #pokemonInput {
-        border-width: 1.5px;
+@media (max-width: 420px) {
+    .gameBoy {
+        transform: translate(-50%, -50%) scale(0.66);
+    }
+}
+
+@media (max-height: 820px) and (min-width: 561px) {
+    .gameBoy {
+        transform: translate(-50%, -50%) scale(0.84);
+    }
+}
+
+@media (max-height: 680px) {
+    .gameBoy {
+        transform: translate(-50%, -50%) scale(0.68);
     }
 }
