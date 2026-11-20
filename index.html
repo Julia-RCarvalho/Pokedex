@@ -3,24 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokedex Express - TypeScript</title>
-    <!-- Vincula o arquivo CSS externo para estilização -->
+    <title>Pokédex - TypeScript</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <main class="container">
-        <h1>Busca Pokémon 🌸</h1>
-        
-        <!-- Área de entrada de dados -->
-        <div class="search-box">
-            <input type="text" id="pokemonInput" placeholder="Ex: Pikachu, Ditto, Charmander" autocomplete="off" />
-            <button id="searchBtn">Pesquisar</button>
+    <div class ="gameBoy">
+        <div class ="screen-border">
+            <div class ="line-red"></div>
+            <div class ="power"></div>
+            <div class="screen">
+                <div id="screenMessage" class="message">Digite o nome de um pokemon e clique em "Buscar"</div>
+                <div id="cardContainer"></div>
+            </div>
         </div>
 
-        <!-- Área onde o card do Pokémon será injetado dinamicamente via TypeScript -->
-        <div id="pokemonCard" class="card-container"></div>
-    </main>
+        <div class="search-box">
+            <input type="text" id="pokemonInput" placeholder="Ex: Pikachu, Ditto..." autocomplete="off" />
+            <div class="search-actions">
+                <button type="button" id="searchBtn">Buscar</button>
+                <button type="button" id="cleanBtn">Limpar</button>
+            </div>
+        </div>
+
+        <div class="d-pad">
+            <div class="d-y"></div>
+                <div class="vol-up" id="volUpBtn" role="button" tabindex="0" aria-label="Aumentar volume">▲</div>
+                <div class="vol-down" id="volDownBtn" role="button" tabindex="0" aria-label="Diminuir volume">▼</div>
+            <div class="d-x"></div>
+                <div class="d-x"><span class="vol-label">VOLUME</span></div>
+        </div>
+        <div class="logo">
+            <div class ="nintendo">Nintendo</div>
+            <div class ="GB">Game-boy</div>
+        </div>
+        <div class ="buttons">
+            <div class="b-a" id="playMusicBtn" role="button" tabindex="0" aria-label="Tocar música"><span class="btn-icon">♫</span></div>
+            <div class="b-b" id="stopMusicBtn" role="button" tabindex="0" aria-label="Parar música"><span class="btn-icon">■</span></div>
+        </div>
+        <div class = "buttons_s">
+            <div class="start"></div>
+            <div class="select"></div>
+        </div>
+    </div>
 
     <!-- Script compilado do TypeScript -->
     <script type="module" src="script.js"></script>

@@ -1,11 +1,11 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body{
+body {
     background-color: white;
     min-height: 100vh;
     margin: 0;
@@ -13,130 +13,635 @@ body{
     justify-content: center;
     align-items: center;
     padding: 10px;
+    position: relative;
+    overflow: hidden;
 }
 
 body::before {
-  content: "";
-  position: absolute;
-  top: 0%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://i.pinimg.com/originals/6a/ee/ea/6aeeea24e8fd4023a349e354eefa33ed.gif');
-  background-size: cover;
-  background-position: left center;
-  z-index: -1;
-  opacity: 0.6;
-}
-
-
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 600px;
-    min-height: 800px;
-    background-color: rgb(255, 209, 217);
-    border-radius: 16px;
-    padding: 80px;
-    box-shadow: 0 10px 25px rgba(83, 1, 19, 0.582);
-}
-
-.container h1{
-    font-size: 40px;
-    color:brown;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.search-box {
-  align-items: center;
-  padding: 15px;
-  border-radius: 8px;
-}
-
-#pokemonInput{
-    border-color: rgb(255, 0, 106);
-    width: 300px;
-    height: 35px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-input:focus {
-    border-color: #007bff;
-}
-
-
-#searchBtn{
-    color:rgb(255, 255, 255);
-    background-color: brown;
-    border-color: brown;
-    border-radius: 8px;
-    font-size: 16px;
-    font-style: bold;
-    padding: 5px;
-}
-
-#searchBtn:hover{
-    box-shadow: 0px 0px 15px rgb(255, 131, 158);
-    cursor: pointer;
-    transform: translateY(-2px) scale(1.0);
-}
-
-.card-container{
-    align-items: center;
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 440px; 
-    min-height: 550px;
-    background-color: rgb(255, 225, 230);
-    border-radius: 10px;
-    padding: 80px;
-    box-shadow: 0 5px 8px rgba(172, 68, 90, 0.507);
-    margin: 20px auto 0 auto;
+    height: 100%;
+    background-image: url('https://i.pinimg.com/originals/6a/ee/ea/6aeeea24e8fd4023a349e354eefa33ed.gif');
+    background-size: cover;
+    background-position: left center;
+    z-index: -1;
+    opacity: 0.6;
 }
 
-.pokemon-card {
-    padding: 20px;
-    border-radius: 10px;
+/* Caixa de pesquisa logo abaixo da logo da Nintendo */
+.search-box {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 82%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    animation: fadeIn 0.3s ease-in-out;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 12px;
+    z-index: 20;
+}
+
+#pokemonInput {
+    width: 100%;
+    height: 40px;
+    padding: 4px 8px;
+    border: 2px solid rgb(255, 177, 177);
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #222222;
+    font-family: 'VT323', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+    outline: none;
+    box-shadow:
+        inset 2px 2px 3px rgba(87, 26, 26, 0.781),
+        inset -3px -3px 3px rgba(87, 26, 26, 0.096);
     
 }
 
-.pokemon-card h2 {
-    color: #e96671;
-    text-transform: uppercase;
-    font-size: 1.8rem;
+#pokemonInput:focus {
+    border-color: #001aff;
+}
+
+.search-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    
+}
+
+#searchBtn,
+#cleanBtn {
+    flex: 0 1 auto;
+    width: auto;
+    height: 30px;
+    padding: 6px 20px;
+    border-radius: 6px;
+    border: none;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+#searchBtn {
+    background-color: brown;
+    box-shadow: 
+        1px 3px 0px #5c1414,
+        inset 1px 3px 2px #ff8e8e;
+    
+}
+
+#searchBtn:hover {
+    filter: brightness(1.1);
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+#cleanBtn {
+    background-color: rgb(110, 110, 110);
+    box-shadow: 
+        1px 3px 0px #444444,
+        inset 1px 3px 2px #a7a7a7;
+}
+
+#cleanBtn:hover {
+    filter: brightness(1.1);
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+#searchBtn:active,
+#cleanBtn:active {
+    transform: translateY(1px);
+}
+
+
+/* Conteúdo do Pokémon dentro da .screen */
+.pokemon-card {
+    width: 100%;
+    height: 100%;
+    padding: 4% 0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    gap: 12px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.pokemon-number {
+    color: #ffd000;
+    background-color: rgba(255, 208, 0, 0.08);
+    border: 1.5px solid rgba(255, 208, 0, 0.55);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.55rem, 4.5cqi, 0.8rem);
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0px #000000;
 }
 
 .pokemon-card img {
-    width: 300px;
-    height: 300px;
+    width: 140px; /* Ocupa 55% da largura disponível da tela */
+    max-width: 200px;
+    max-height: 55%;
+    aspect-ratio: 1 / 1; /* Mantém sempre quadrado */
+    object-fit: contain;
+    animation: flutuar 2.5s ease-in-out infinite;
+
 }
 
-.pokemon-card p {
-    color: #ff7c87;
-    font-size: 1.4rem;
+
+@keyframes flutuar {
+    0%, 100% {
+        transform: translateY(0%) scale(1.25); /* ajuste o zoom aqui (ex: 1.15, 1.25, 1.4) */
+    }
+    50% {
+        transform: translateY(-4%) scale(1.25);
+    }
 }
 
-/* Mensagens de feedback (carregamento/erro) */
+.pokemon-name,
+.pokemon-card h2 {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: clamp(0.75rem, 6.5cqi, 1.25rem);
+    font-family: 'Press Start 2P', monospace;
+    line-height: 1.2;
+    text-shadow: 2px 2px 0px #000000;
+    max-width: 100%;
+    word-break: break-word;
+}
+
+.type-badge {
+    background-color: #a8a89c;
+    color: #ffffff;
+    border-radius: 999px;
+    padding: 5px 18px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.5rem, 4cqi, 0.72rem);
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.65);
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.pokemon-card p,
+.pokemon-card p strong {
+    color: #ffffff;
+    font-size: clamp(0.6rem, 4.5cqi, 0.9rem);
+    font-family: 'Press Start 2P', monospace;
+    font-weight: normal;
+    line-height: 1.4;
+    gap: 12px;
+}
+
+/* Mensagens de feedback (carregamento/erro) na .screen */
 .message {
-    color: #555;
-    font-size: 0.95rem;
-    margin-top: 15px;
+    color: #fffb00;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.6rem, 4.5cqi, 0.85rem);
+    line-height: 1.5;
+    text-align: center;
+    padding: 8px;
+    max-width: 100%;
+    word-break: break-word;
+    text-shadow: 2px 2px 0px #000000;
 }
 
 .error {
-    color: #d9534f !important;
+    color: #fffb00 !important;
     font-weight: bold;
+    text-shadow: 0px solid black;
 }
 
-/* Pequena animação para o card aparecer suavemente */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
+/* GameBoy */
+.gameBoy {
+    width: 500px;
+    height: 800px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 3%;
+    border-bottom-right-radius: 100px;
+    background: linear-gradient(145deg, #ffc4d0, pink 55%, #f29cb0);
+    box-shadow:
+        5px 10px 10px rgba(97, 47, 60, 0.842),
+        inset 6px 8px 8px rgba(255, 255, 255, 0.712),
+        inset -4px -12px 12px rgba(140, 20, 54, 0.37);
+    z-index: 1;
+}
+
+.screen-border {
+    width: 80%;
+    height: 50%;
+    background: linear-gradient(145deg, #a5a5a5 0%, rgb(197, 197, 197) 45%, #535353 100%);
+    position: absolute;
+    top: 60px;
+    left: 50px;
+    border-radius: 5%;
+    border-bottom-right-radius: 100px;
+    box-shadow:
+        inset 2px 2px 4px rgba(255, 255, 255, 0.801),
+        inset -3px -2px 3px rgba(19, 19, 19, 0.507);
+}
+
+.line-red {
+    width: 180px;
+    height: 4px;
+    background-color: rgb(182, 80, 80);
+    margin: 0 auto;
+    margin-top: 16px;
+}
+
+.screen {
+    width: 60%;
+    height: 80%;
+    background-color: #949494;
+    position: absolute;
+    top: 10%;
+    left: 20%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6%;
+    box-sizing: border-box;
+    container-type: inline-size;
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.9);
+}
+
+.screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(255, 255, 255, 0.28) 3px,
+    );
+    pointer-events: none;
+    z-index: 5;
+}
+
+.power {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 90px;
+    left: 30px;
+    background: radial-gradient(
+        circle at 32% 28%,
+        #ffffff 0%,
+        #ff9999 18%,
+        #ff1e1e 55%,
+        #8f0000 100%
+    );
+    border: 1px solid rgba(50, 0, 0, 0.55);
+    box-shadow:
+        0 0 5px rgba(255, 42, 42, 0.95),
+        0 0 12px rgba(255, 0, 0, 0.75),
+        0 0 22px rgba(255, 30, 30, 0.4),
+        0 1px 2px rgba(255, 255, 255, 0.25),
+        inset 1.5px 1.5px 2.5px rgba(255, 255, 255, 0.85),
+        inset -2px -2px 4px rgba(80, 0, 0, 0.75);
+    animation: led-pulse 3s ease-in-out infinite;
+}
+
+
+.logo {
+    position: absolute;
+    top: 59%;
+    left: 13%;
+    width: 80%;
+    color: rgb(65, 65, 65);
+}
+
+.nintendo {
+    float: left;
+    font-weight: bolder;
+    font-size: 18px;
+    line-height: 46px;
+    margin-right: 6px;
+}
+
+.GB {
+    float: left;
+    font-style: italic;
+    text-transform: uppercase;
+    font-weight: bolder;
+    font-size: 28px;
+    line-height: 46px;
+}
+
+.d-pad {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    position: absolute;
+    top: 78%;
+    left: 10%;
+    background: radial-gradient(
+        circle at 65% 65%,
+        rgba(255, 225, 232, 0.45) 0%,
+        rgba(232, 132, 154, 0.75) 65%,
+        rgba(175, 72, 98, 0.85) 100%
+    );
+    box-shadow:
+        inset 5px 6px 12px rgba(110, 20, 45, 0.281),
+        inset 2px 2px 4px rgba(80, 0, 20, 0.205),
+        inset -4px -5px 10px rgba(255, 255, 255, 0.459),
+        0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.d-pad::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    filter: drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.55));
+}
+
+
+
+.d-y {
+    width: 24px;
+    height: 66px;
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 6px;
+    transform: translate(-50%, -50%);
+}
+
+.vol-up,
+.vol-down {
+    position: absolute;
+    left: 50%;
+    width: 24px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.78);
+    cursor: pointer;
+    user-select: none;
+    z-index: 3;
+    transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.vol-up {
+    top: 23px;
+    transform: translateX(-50%);
+}
+
+.vol-down {
+    bottom: 23px;
+    transform: translateX(-50%);
+}
+
+.vol-up:hover,
+.vol-down:hover {
+    color: #ffffff;
+}
+
+.vol-up:active {
+    transform: translateX(-50%) scale(0.9);
+}
+
+.vol-down:active {
+    transform: translateX(-50%) scale(0.9);
+}
+
+.d-x {
+    width: 66px;
+    height: 24px;
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 6px;
+    transform: translate(-50%, -50%);
+}
+
+.vol-label {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    pointer-events: none;
+    user-select: none;
+}
+
+.d-y,
+.d-x {
+    background: linear-gradient(145deg, #3a3a3a, #080808);
+    box-shadow:
+        1px 2px 4px rgba(0, 0, 0, 0.55),
+        inset 2px 1px 1px rgba(255, 255, 255, 0.452);
+}
+
+
+
+.buttons {
+    width: 56px;
+    height: 130px;
+    border-radius: 30px;
+    position: absolute;
+    top: 77%;
+    right: 17%;
+    transform: rotate(60deg);
+    background: linear-gradient(120deg, rgba(110, 52, 82, 0.88), rgba(150, 82, 116, 0.8));
+    box-shadow:
+        inset 4px -4px 8px rgba(55, 15, 35, 0.65),
+        inset -1px 2px 3px rgba(255, 210, 225, 0.45),
+        0 1px 2px rgba(255, 255, 255, 0.45);
+}
+
+.b-a {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(194, 76, 121);
+    border-radius: 50%;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    box-shadow: 4px 4px 6px rgb(114, 49, 49);
+}
+
+.b-b {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(194, 76, 121);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    box-shadow: 4px 4px 6px rgb(114, 49, 49);
+}
+
+.b-a,
+.b-b {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 25% 70%, #e46e9b 0%, rgb(194, 76, 121) 60%, #8f2d53 100%);
+    box-shadow:
+        0px 4px 0 #530927,
+        -5px 7px 9px rgba(45, 10, 25, 0.55),
+        inset -1px 2px 3px rgba(255, 255, 255, 0.45);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-icon {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 22px;
+    line-height: 1;
+    transform: rotate(-60deg);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+#playMusicBtn .btn-icon {
+    transform: rotate(-60deg) translate(-1px, -2px); /* ajuste X e Y se precisar */
+}
+
+#stopMusicBtn .btn-icon {
+    transform: rotate(-60deg) translate(-1px, -1px); /* ajuste X e Y se precisar */
+}
+
+.b-a {
+    top: 8px;
+    right: 8px;
+}
+
+.b-b {
+    bottom: 8px;
+    left: 8px;
+}
+
+/* Efeito de clique afundando o botão */
+.b-a:active,
+.b-b:active {
+    transform: translate(-2px, 2px);
+    box-shadow:
+        -1px 1px 0 #701f3f,
+        -2px 3px 5px rgba(45, 10, 25, 0.55),
+        inset -1px 2px 2px rgba(255, 255, 255, 0.25);
+}
+
+.buttons_s {
+    width: 80px;
+    height: 60px;
+    position: absolute;
+    top: 90%;
+    left: 42%;
+}
+
+.start {
+    width: 14px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: rgb(43, 43, 43);
+    transform: rotate(50deg);
+    box-shadow: 2px 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.select {
+    width: 14px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: rgb(43, 43, 43);
+    transform: rotate(50deg);
+    position: absolute;
+    right: 4px;
+    top: 0px;
+    box-shadow: 2px 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.start,
+.select {
+    width: 14px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: linear-gradient(145deg, #4b4b4b 0%, #2b2b2b 55%, #141414 100%);
+    box-shadow:
+        2px 3px 5px rgba(0, 0, 0, 0.5),
+        inset 1px 1px 1px rgba(255, 255, 255, 0.25),
+        inset -1px -1px 2px rgba(0, 0, 0, 0.7);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.start {
+    transform: rotate(50deg);
+}
+
+.select {
+    transform: rotate(50deg);
+    position: absolute;
+    right: 4px;
+    top: 0px;
+}
+
+/* Efeito de tecla pressionada (mantendo a rotação de 50deg) */
+.start:active {
+    transform: rotate(50deg) translate(1px, 2px);
+    box-shadow:
+        1px 1px 2px rgba(0, 0, 0, 0.5),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.select:active {
+    transform: rotate(50deg) translate(1px, 2px);
+    box-shadow:
+        1px 1px 2px rgba(0, 0, 0, 0.5),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+
+/* Fim GameBoy */
